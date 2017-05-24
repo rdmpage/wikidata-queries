@@ -71,5 +71,32 @@ WHERE
 [Try it](http://tinyurl.com/kclxpzv)
 
 
+## Find work based on DOI
+
+```
+SELECT *
+WHERE
+{
+  ?work wdt:P356 "10.2476/ASJAA.62.33" .
+}
+```
+[Try it](http://tinyurl.com/k9qs282)
+
+## Find work based on DOI (case insenstive) SLOW
+
+Wikidata has DOIs in UPPERCASE, CrossRef recommends lowercase, can use filter to have case 
+insensitive query (slow)
+
+```
+SELECT *
+WHERE
+{
+  ?work wdt:P356 ?doi .
+  FILTER (lcase(str(?doi)) = "10.2476/asjaa.62.33")
+}
+```
+
+[Try it](http://tinyurl.com/jwgefzd)
+
 
 
