@@ -82,6 +82,8 @@ WHERE
 ```
 [Try it](http://tinyurl.com/k9qs282)
 
+If DOI not found can add it using http://tools.wmflabs.org/sourcemd
+
 ## Find work based on DOI (case insenstive) SLOW
 
 Wikidata has DOIs in UPPERCASE, CrossRef recommends lowercase, can use filter to have case 
@@ -97,6 +99,24 @@ WHERE
 ```
 
 [Try it](http://tinyurl.com/jwgefzd)
+
+## Find Wikidata item for Wikispecies author
+
+Wikispecies authors are on Wikidata, so we can get Wikidata items using the Wikispecies URL
+with author name URL encoded (instead of underscores "_" use url encoded spaces %20).
+
+```
+SELECT *
+WHERE
+{
+    VALUES ?article {<https://species.wikimedia.org/wiki/Bing%20Zhou>}
+	?article schema:about ?author .
+    ?author wdt:P31 wd:Q5 .
+}
+```
+[Try it](http://tinyurl.com/meq6ky6)
+
+
 
 
 
