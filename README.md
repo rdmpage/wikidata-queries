@@ -68,7 +68,7 @@ WHERE
 
 [Try it](http://tinyurl.com/yca8qke5)
 
-In this example wd:Q1346792 is Tamerlan Thorell.
+In this example [wd:Q1346792](https://www.wikidata.org/wiki/Q1346792) is Tamerlan Thorell.
 
 ## Find date of publication
 
