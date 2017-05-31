@@ -1,6 +1,6 @@
 # Wikidata queries
 
-Examples of Wikidata queries relevent to stuff I work on.
+Examples of Wikidata queries relevant to stuff I work on.
 
 
 ## Source(s) of a taxon name in Wikidata
@@ -49,6 +49,27 @@ WHERE
 
 [Try it](http://tinyurl.com/lur5xtf)
 
+## Find taxa named by author (inverse of previous query)
+
+```
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX pq: <http://www.wikidata.org/prop/qualifier/>
+PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+PREFIX p: <http://www.wikidata.org/prop/>
+
+SELECT *
+WHERE
+{
+  ?statement pq:P405 wd:Q1346792 .
+  ?taxon p:P225 ?statement .
+  ?taxon wdt:P225 ?taxon_name .  
+}
+```
+
+[Try it](http://tinyurl.com/yca8qke5)
+
+In this example wd:Q1346792 is Tamerlan Thorell.
+
 ## Find date of publication
 
 Date of publication of name
@@ -84,7 +105,7 @@ WHERE
 
 If DOI not found can add it using http://tools.wmflabs.org/sourcemd
 
-## Find work based on DOI (case insenstive) SLOW
+## Find work based on DOI (case insensitive) SLOW
 
 Wikidata has DOIs in UPPERCASE, CrossRef recommends lowercase, can use filter to have case 
 insensitive query (slow)
