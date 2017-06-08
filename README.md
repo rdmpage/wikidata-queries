@@ -137,6 +137,57 @@ WHERE
 ```
 [Try it](http://tinyurl.com/meq6ky6)
 
+## Find an author based on name
+
+```
+SELECT ?_human ?name  WHERE { 
+  VALUES ?family {"Agassiz"@en }
+  VALUES ?given {"Alexander"@en }
+
+  ?_human wdt:P31 wd:Q5.
+  ?_human rdfs:label ?name .
+                
+  ?_human wdt:P734 ?familyName .
+  ?familyName rdfs:label ?family . 
+                
+  ?_human wdt:P735 ?givenName .
+  ?givenName rdfs:label ?given . 
+  
+   FILTER (lang(?name) = 'en')
+}
+```
+[Try it](http://tinyurl.com/y78h344k)
+
+## Find an author based on name and birth and death dates
+
+```
+SELECT ?_human ?name  WHERE { 
+  
+  VALUES ?family {"Agassiz"@en }
+  VALUES ?given {"Alexander"@en }
+  VALUES ?birth { 1835 }
+  VALUES ?death { 1910 }
+  
+  ?_human wdt:P31 wd:Q5.
+  ?_human rdfs:label ?name .
+                
+  ?_human wdt:P734 ?familyName .
+  ?familyName rdfs:label ?family . 
+                
+  ?_human wdt:P735 ?givenName .
+  ?givenName rdfs:label ?given . 
+  
+  ?_human wdt:P569 ?birth_date .
+  ?_human wdt:P570 ?death_date .
+  
+  FILTER(year(?birth_date) = ?birth) .
+  FILTER(year(?death_date) = ?death) .
+  FILTER (lang(?name) = 'en')
+
+}
+```
+
+[Try it](http://tinyurl.com/ycbyu7v3)
 
 
 
