@@ -1,6 +1,6 @@
 # Wikidata queries
 
-Examples of Wikidata queries relevant to stuff I work on.
+Examples of Wikidata queries relevant to stuff I work on. Includes discussion of how to add data.
 
 
 ## Source(s) of a taxon name in Wikidata
@@ -188,6 +188,75 @@ SELECT ?_human ?name  WHERE {
 ```
 
 [Try it](http://tinyurl.com/ycbyu7v3)
+
+
+## Generate list and map of museums and their collection codes
+
+Based on the new [Biodiversity Repository ID](https://www.wikidata.org/wiki/Property:P4090) property we could list all museums and herbaria with codes and put them on a map. Only two examples at time of writing:
+
+```
+SELECT *  WHERE { 
+  ?museum wdt:P4090 ?code .
+  ?museum rdfs:label ?name .
+  OPTIONAL {
+  ?museum wdt:P625 ?coord .
+  }
+                
+  FILTER (lang(?name) = 'en')
+}
+```
+
+[Try it](http://tinyurl.com/ybwb5oa2)
+
+
+## Adding data
+
+To add a publication based on its DOI go to http://tools.wmflabs.org/sourcemd and paste in the DOI. If the DOI does not exist in Wikidata, you should redirected to the [QuickStatements](https://tools.wmflabs.org/wikidata-todo/quick_statements.php) tool and see something like this:
+
+```
+CREATE
+LAST	P356	"10.1016/J.SAJB.2012.07.014"
+LAST	P31	Q13442814
+LAST	P1476	en:"Species limits in Vachellia (Acacia) karroo (Mimosoideae: Leguminoseae): Evidence from automated ISSR DNA “fingerprinting”"
+LAST	Len	"Species limits in Vachellia (Acacia) karroo (Mimosoideae: Leguminoseae): Evidence from automated ISSR DNA “fingerprinting”"
+LAST	P304	"36-43"
+LAST	P478	"83"
+LAST	P577	+2012-11-00T00:00:00Z/10
+LAST	P2093	"C.L. Taylor"	P1545	"1"
+LAST	P2093	"N.P. Barker"	P1545	"2"
+```
+
+These are triples describing the article. “LAST” links every triple to the Wikidata identifier created for the article.
+
+Below you will see the text:
+
+You need to authorize WiDaR to edit Wikidata on you behalf for this tool to work!
+
+https://tools.wmflabs.org/widar/index.php?action=authorize
+
+Authorise WiDaR and then add the statments to Wikidata (click on "Do it"). You should see the results of your editing below:
+
+```
+Processing Q32062483 (Q32062483 P356 "10.1016/J.SAJB.2012.07.014")
+Processing Q32062483 (Q32062483 P31 Q13442814)
+Processing Q32062483 (Q32062483 P1476 en:"Species limits in Vachellia (Acacia) karroo (Mimosoideae: Leguminoseae): Evidence from automated ISSR DNA “fingerprinting”")
+Processing Q32062483 (Q32062483 Len "Species limits in Vachellia (Acacia) karroo (Mimosoideae: Leguminoseae): Evidence from automated ISSR DNA “fingerprinting”")
+Processing Q32062483 (Q32062483 P304 "36-43")
+Processing Q32062483 (Q32062483 P478 "83")
+Processing Q32062483 (Q32062483 P577 +2012-11-00T00:00:00Z/10)
+Processing Q32062483 (Q32062483 P2093 "C.L. Taylor" P1545 "1")
+Processing Q32062483 (Q32062483 P2093 "N.P. Barker" P1545 "2")
+All done!.
+```
+
+## Add repository code (Institution code) to Wikidata
+
+Go to [QuickStatements](https://tools.wmflabs.org/wikidata-todo/quick_statements.php), make sure you have
+authorised WiDar, and enter statements. This example adds "NHMUK" to the entry for the Natural History Museum, London.
+
+```
+Q309388	P4090	"NHMUK"
+```
 
 
 
