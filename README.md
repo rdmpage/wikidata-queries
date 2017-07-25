@@ -121,21 +121,32 @@ WHERE
 
 [Try it](http://tinyurl.com/jwgefzd)
 
-## Find Wikidata item for Wikispecies author
-
-Wikispecies authors are on Wikidata, so we can get Wikidata items using the Wikispecies URL
-with author name URL encoded (instead of underscores "_" use url encoded spaces %20).
+## Find journal from ISSN
 
 ```
 SELECT *
 WHERE
 {
-    VALUES ?article {<https://species.wikimedia.org/wiki/Bing%20Zhou>}
-	?article schema:about ?author .
+  ?journal wdt:P236 "0074-0276" .
+}
+```
+[Try it](http://tinyurl.com/yb4ufys6)
+
+## Find Wikidata item for Wikispecies author
+
+Wikispecies authors are on Wikidata, so we can get Wikidata items using the Wikispecies URL.
+~~with author name URL encoded (instead of underscores "_" use url encoded spaces %20~~).
+
+```
+SELECT *
+WHERE
+{
+    VALUES ?article {<https://species.wikimedia.org/wiki/Bing_Zhou>}
+	  ?article schema:about ?author .
     ?author wdt:P31 wd:Q5 .
 }
 ```
-[Try it](http://tinyurl.com/meq6ky6)
+[Try it]~~(http://tinyurl.com/meq6ky6)~~(http://tinyurl.com/yazywu3y)
 
 ## Find an author based on name
 
