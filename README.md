@@ -270,5 +270,22 @@ Q309388	P4090	"NHMUK"
 ```
 
 
+### List articles published in a journal
+
+In this example we list all the articles published in *Zootaxa* (ISSN 1175-5326).
+```
+SELECT * WHERE {
+  ?journal wdt:P236 "1175-5326".
+  ?work wdt:P1433 ?journal.
+  ?work wdt:P1476 ?title.
+  ?work wdt:P478 ?volume.
+  ?work wdt:P577 ?date .
+  OPTIONAL { ?work wdt:P356 ?doi. }
+} ORDER BY (year(?date))
+```
+[Try it](http://tinyurl.com/y9536hy6)
+
+
+
 
 
