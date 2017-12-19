@@ -1,6 +1,6 @@
 # Wikidata queries
 
-Examples of Wikidata queries relevant to stuff I work on. Includes discussion of how to add data.
+Examples of Wikidata queries relevant to stuff I work on. Includes discussion of how to add data, and federated queries.
 
 
 ## Source(s) of a taxon name in Wikidata
@@ -285,7 +285,39 @@ SELECT * WHERE {
 ```
 [Try it](http://tinyurl.com/y9536hy6)
 
+### Federated SPARQL
 
+This query calls two different SPARQL endpoints, [Uniprot](http://sparql.uniprot.org/sparql) and [Wikidata](https://query.wikidata.org). I gather Wikidata limits the possible external SPARQL series it can call, so this query needs to be run on another SPARQL endpoint. This query works on Apache Jena Fuseki Version 3.4.0 (running as a container [stain/jena-fuseki](https://hub.docker.com/r/stain/jena-fuseki/) ).
 
+```
+PREFIX up:<http://purl.uniprot.org/core/>
+PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+PREFIX wd: <http://www.wikidata.org/entity/>	
+SELECT *
+FROM <http://sparql.uniprot.org/taxonomy>
+WHERE
+{
+  # Find taxon in NCB taxonomy called "Begonia"
+  # Convert IRI to string
+  SERVICE <http://sparql.uniprot.org/sparql> 
+  {
+    ?taxon up:scientificName "Begonia" .
+    BIND( REPLACE( STR(?taxon),"http://purl.uniprot.org/taxonomy/","" ) AS ?ncbi). 
+  }
+  
+  # Find Wikidata entity for same taxon using NCBI tax_id
+  SERVICE <https://query.wikidata.org/sparql> 
+  {
+    ?wikidata wdt:P685 ?ncbi .
+    ?wikidata wdt:P225 ?name .
+  }	  
+}	
+```
+
+Result:
+
+taxon | ncbi | wikidata | name
+      --- | --- | --- | --- 
+<http://purl.uniprot.org/taxonomy/3681> | "3681" | wd:Q158617 | "Begonia"
 
 
