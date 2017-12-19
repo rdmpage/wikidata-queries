@@ -294,10 +294,9 @@ PREFIX up:<http://purl.uniprot.org/core/>
 PREFIX wdt: <http://www.wikidata.org/prop/direct/>
 PREFIX wd: <http://www.wikidata.org/entity/>	
 SELECT *
-FROM <http://sparql.uniprot.org/taxonomy>
 WHERE
 {
-  # Find taxon in NCB taxonomy called "Begonia"
+  # Find taxon in NCBI taxonomy called "Begonia"
   # Convert IRI to string
   SERVICE <http://sparql.uniprot.org/sparql> 
   {
@@ -320,4 +319,30 @@ taxon | ncbi | wikidata | name
       --- | --- | --- | --- 
 <http://purl.uniprot.org/taxonomy/3681> | "3681" | wd:Q158617 | "Begonia"
 
+For more examples and background see [Integrating Wikidata and other linked data sources – Federated SPARQL queries](http://sulab.org/2017/07/integrating-wikidata-and-other-linked-data-sources-federated-sparql-queries/)
+
+Can also run slightly modified version on the Uniprot SPARQL endpoint: 
+
+```
+PREFIX up:<http://purl.uniprot.org/core/>
+PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+PREFIX wd: <http://www.wikidata.org/entity/>	
+SELECT *
+WHERE
+{
+  # Find taxon in NCBI taxonomy called "Begonia"
+  # Convert IRI to string
+  
+  ?taxon up:scientificName "Begonia" .
+  BIND( REPLACE( STR(?taxon),"http://purl.uniprot.org/taxonomy/","" ) AS ?ncbi). 
+
+  # Find Wikidata entity for same taxon using NCBI tax_id
+  SERVICE <https://query.wikidata.org/sparql> 
+  {
+    ?wikidata wdt:P685 ?ncbi .
+    ?wikidata wdt:P225 ?name .
+  }	  
+}	
+```
+[Try it](http://tinyurl.com/ybxzk9nm)
 
