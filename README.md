@@ -316,7 +316,7 @@ WHERE
 Result:
 
 taxon | ncbi | wikidata | name
-      --- | --- | --- | --- 
+--- | --- | --- | --- 
 <http://purl.uniprot.org/taxonomy/3681> | "3681" | wd:Q158617 | "Begonia"
 
 For more examples and background see [Integrating Wikidata and other linked data sources – Federated SPARQL queries](http://sulab.org/2017/07/integrating-wikidata-and-other-linked-data-sources-federated-sparql-queries/)
@@ -345,4 +345,72 @@ WHERE
 }	
 ```
 [Try it](http://tinyurl.com/ybxzk9nm)
+
+
+### OpenURL-style queries
+
+#### Find article from ISSN, volume, and first page
+
+```
+SELECT * WHERE 
+{ 
+  VALUES ?issn {"1175-5326" } .
+  VALUES ?volume {"2528" } .
+  VALUES ?firstpage {"^1(–[0-9]+)?$" } .
+  
+  ?work wdt:P1433 ?container .
+  ?container wdt:P236 ?issn.
+  ?work wdt:P478 ?volume .
+  ?work wdt:P304 ?pages .
+  FILTER regex(?pages,?firstpage,'i')
+}
+```
+[Try it](http://tinyurl.com/ydgkuuec)
+
+Note that **?firstpage** is a regular expression to match (in this case) an article that starts on page 1.
+
+#### Find article from journal, volume, first page
+
+```
+SELECT * WHERE {
+  VALUES ?container_title { "Zootaxa"@en } .
+  VALUES ?volume {"2528" } .
+  VALUES ?firstpage {"^1(–[0-9]+)?$" } .
+ 
+  ?work wdt:P1433 ?container.
+  ?container rdfs:label ?container_title .
+  ?work wdt:P478 ?volume.
+  ?work wdt:P304 ?pages.
+  FILTER regex(?pages,?firstpage,'i')
+}
+```
+[Try it](http://tinyurl.com/y8p5gmm5)
+
+Note the need for the correct journal name and the language qualifier (**@en**).
+
+#### Find by volume, first page, year
+
+Can try a tuple of [volume, page, year] to avoid problems of string matching on journal name.
+
+```
+SELECT * WHERE {
+  VALUES ?volume {"2528" } .
+  VALUES ?firstpage {"^1(–[0-9]+)?$" } .
+  VALUES ?year { "2010" } .
+ 
+  ?work wdt:P1433 ?container.
+  ?work wdt:P478 ?volume.
+  ?work wdt:P304 ?pages.
+  ?work wdt:P577 ?date .
+  FILTER regex(?pages,?firstpage,'i') .
+  FILTER(STR(YEAR(?date)) = ?year)
+}
+```
+[Try it](http://tinyurl.com/yalag3gr)
+
+
+
+
+
+
 
