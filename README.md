@@ -146,7 +146,7 @@ WHERE
     ?author wdt:P31 wd:Q5 .
 }
 ```
-[Try it]~~(http://tinyurl.com/meq6ky6)~~(http://tinyurl.com/yazywu3y)
+[Try it] (http://tinyurl.com/yazywu3y)
 
 ## Find an author based on name
 
@@ -408,6 +408,24 @@ SELECT * WHERE {
 ```
 [Try it](http://tinyurl.com/yalag3gr)
 
+
+#### Find articles by author from their ORCID
+
+Given an ORCID we can retrieve a list of articles a person has published.
+
+```
+SELECT * 
+WHERE { 
+  ?author wdt:P496 "0000-0002-5721-1840" .
+  ?work wdt:P50 ?author .
+  OPTIONAL {
+    ?work wdt:P356 ?doi 
+  }
+  ?work wdt:P1476 ?title .
+}
+```
+
+[Try it](http://tinyurl.com/y8udypz8)
 
 
 
