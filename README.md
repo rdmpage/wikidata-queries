@@ -428,6 +428,28 @@ WHERE {
 [Try it](http://tinyurl.com/y8udypz8)
 
 
+### Taxonomic tree
+
+Query that fetches all edges in a tree rooted on **Liphistiidae**, based on query in d3sparql.js.
+
+```
+PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+PREFIX wd: <http://www.wikidata.org/entity/>
+SELECT ?root_name ?parent_name ?child_name WHERE
+{
+ VALUES ?root_name {"Liphistiidae"}
+ ?root wdt:P225 ?root_name .
+ ?child wdt:P171+ ?root .
+ ?child wdt:P171 ?parent .
+ ?child wdt:P225 ?child_name .
+ ?parent wdt:P225 ?parent_name .
+}
+```
+
+[Try it](http://tinyurl.com/ybkr82wj)
+
+
+
 
 
 
