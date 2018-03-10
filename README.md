@@ -260,6 +260,10 @@ Processing Q32062483 (Q32062483 P2093 "N.P. Barker" P1545 "2")
 All done!.
 ```
 
+## Remove statements
+
+This can be done using [QuickStatements 2](https://tools.wmflabs.org/quickstatements/#) see https://www.wikidata.org/wiki/Help:QuickStatements#Removing_statements
+
 ## Add repository code (Institution code) to Wikidata
 
 Go to [QuickStatements](https://tools.wmflabs.org/wikidata-todo/quick_statements.php), make sure you have
@@ -447,6 +451,24 @@ SELECT ?root_name ?parent_name ?child_name WHERE
 ```
 
 [Try it](http://tinyurl.com/ybkr82wj)
+
+
+### IUCN Status
+
+```
+SELECT * WHERE 
+{ 
+  ?wikidata wdt:P141 ?status. 
+  ?wikidata rdfs:label ?name .
+  ?wikidata wdt:P225 ?taxon_name .
+  ?status rdfs:label ?status_label .
+  FILTER (lang(?name) = 'en') .
+  FILTER (lang(?status_label) = 'en')
+}
+LIMIT 10
+```
+
+
 
 
 
