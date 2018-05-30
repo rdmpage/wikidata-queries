@@ -471,7 +471,25 @@ LIMIT 10
 
 
 
+### Other topics
 
+#### Mountains in African Rift Valley
+
+```
+SELECT * WHERE {
+  ?item wdt:P31 wd:Q8502.
+  ?item rdfs:label ?name .
+  ?item wdt:P625 ?geo.
+  ?item wdt:P361 wd:Q81591.
+  OPTIONAL { ?item wdt:P1886 ?id } .
+  OPTIONAL { ?item wdt:P2044 ?height } .
+  OPTIONAL { ?item wdt:P18 ?image } .
+  OPTIONAL { ?item wdt:P2348 ?erupted . } .
+  FILTER (lang(?name) = 'en')
+}
+```
+
+![image](https://rawgit.com/rdmpage/wikidata-queries/master/images/map.png) 
 
 
 
