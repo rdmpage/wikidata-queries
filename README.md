@@ -431,6 +431,23 @@ WHERE {
 
 [Try it](http://tinyurl.com/y8udypz8)
 
+#### Get list of author name strings in order
+
+Note the use of “p”, “ps”, and “pq” to get statment details and qualifier (in this case serial order).
+
+```
+SELECT ?work ?author_name_string ?author_order  WHERE 
+{
+  ?work wdt:P356 "10.1206/0003-0090(2006)297[0001:TATOL]2.0.CO;2" .
+  OPTIONAL {
+    ?work p:P2093 ?statement.
+    ?statement ps:P2093 ?author_name_string .
+    ?statement pq:P1545 ?author_order. 
+  }
+} ORDER BY (xsd:integer(?author_order))
+```
+[try it](http://tinyurl.com/ycjfoefg)
+
 
 ### Taxonomic tree
 
