@@ -449,6 +449,41 @@ SELECT ?work ?author_name_string ?author_order  WHERE
 [try it](http://tinyurl.com/ycjfoefg)
 
 
+#### Find articles by author’s Wikidata id
+
+```
+SELECT * 
+WHERE { 
+  ?work wdt:P50 wd:Q22110755 .
+  OPTIONAL {
+    ?work wdt:P356 ?doi 
+  }
+  ?work wdt:P1476 ?title .
+}
+```
+[Try it](http://tinyurl.com/yc2c8lj9)
+
+#### Find articles by author from Wikispecies id
+
+```
+SELECT *
+WHERE
+{
+    VALUES ?article {<https://species.wikimedia.org/wiki/Erik_J._van_Nieukerken>}
+	?article schema:about ?author .
+    ?author wdt:P31 wd:Q5 .
+    OPTIONAL {
+      ?work wdt:P50 ?author .
+      OPTIONAL {
+        ?work wdt:P356 ?doi 
+      }
+      ?work wdt:P1476 ?title .
+    }
+}
+```
+[Try it](http://tinyurl.com/y886f5gp)
+
+
 ### Taxonomic tree
 
 Query that fetches all edges in a tree rooted on **Liphistiidae**, based on query in d3sparql.js.
