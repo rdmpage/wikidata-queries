@@ -484,6 +484,72 @@ WHERE
 [Try it](http://tinyurl.com/y886f5gp)
 
 
+### Matching authors in Wikidata and Wikispecies
+
+#### Author listed by string (P2093) only so get names to compare
+
+```
+
+# If successful this query will return the Wikidata item for an author 
+# together with the author's name as recorded in Wikipsecies and
+# in the Wikidata item for a work with a given DOI where the author is
+# given as a string (P2093) not an item (P50). A client could use this
+# to get the two names and compare them, if they match then we could construct a
+# series of quick statements to update the Wikidata item for the work with the
+# Wikidata item for the author.
+SELECT ?wikidata_author ?wikidata_author_name ?author_name_string  
+WHERE {
+    # On the Wikipsecies page "Alice_Wells" she is listed as the second author 
+    # for the work with DOI "10.11646/ZOOTAXA.3964.2.2"
+	VALUES ?wikispecies_page {<https://species.wikimedia.org/wiki/Alice_Wells>} .
+	VALUES ?wikispecies_order { "2" } .
+	VALUES ?doi { "10.11646/ZOOTAXA.3964.2.2" } .
+
+    # Find Wikidata item for Wikispecies author
+	?wikispecies_page schema:about ?wikidata_author .
+	?wikidata_author rdfs:label ?wikidata_author_name .
+
+    # Find the Wikidata item for work with the DOI
+	?work wdt:P356 ?doi .
+  
+    # Get name of author in same position as Wikispecies record
+	?work p:P2093 ?statement.
+	?statement ps:P2093 ?author_name_string .
+	?statement pq:P1545 ?wikispecies_order. 
+
+    # Restrict outselves to English language
+	FILTER (lang(?wikidata_author_name) = 'en')   
+} 
+```
+[Try it](http://tinyurl.com/y83hnfyg)
+
+#### Author has Wikidata item linked to work by P50
+
+```
+# Query to return Wikidata item (if one exists) for author at a given position
+# in the list of authors of a work
+SELECT ?wikidata_author ?wikidata_author_name
+WHERE {
+    # DOI for work
+	VALUES ?doi { "10.3897/ZOOKEYS.507.9536" } .
+    # Position in list of authors
+	VALUES ?wikispecies_order { "1" } .
+
+    # Get work for DOI
+	?work wdt:P356 ?doi .
+	
+    # Get details on author so client can check whethe rname matches
+	?work wdt:P50 ?wikidata_author .
+    ?wikidata_author rdfs:label ?wikidata_author_name .
+	?work p:P50 ?statement .
+	?statement pq:P1545 ?wikispecies_order . 
+
+    # Restrict ourselves to English
+    FILTER (lang(?wikidata_author_name) = 'en') 
+}
+```
+[Try it](http://tinyurl.com/y9n64zmy)
+
 ### Taxonomic tree
 
 Query that fetches all edges in a tree rooted on **Liphistiidae**, based on query in d3sparql.js.
