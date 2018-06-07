@@ -550,6 +550,27 @@ WHERE {
 ```
 [Try it](http://tinyurl.com/y9n64zmy)
 
+#### Find works by author by name string
+
+```
+# Find works by author by name string
+SELECT *
+WHERE {
+	VALUES ?author_name_string { "Simon Vitecek" } .
+  
+    ?statement ps:P2093 ?author_name_string .
+    ?work p:P2093 ?statement.
+
+ 	?work wdt:P356 ?doi .
+    OPTIONAL {
+        ?work wdt:P356 ?doi 
+    }
+    ?work wdt:P1476 ?title . 
+} 
+```
+[Try it](http://tinyurl.com/y8p98klo)
+
+
 ### Taxonomic tree
 
 Query that fetches all edges in a tree rooted on **Liphistiidae**, based on query in d3sparql.js.
@@ -586,6 +607,19 @@ SELECT * WHERE
 LIMIT 10
 ```
 
+### Works describing new species
+
+Works having “main subject” “species novae”
+
+```
+SELECT *
+WHERE
+{
+  ?work wdt:P921 wd:Q27652812 . 
+  ?work wdt:P356 ?doi .
+}
+```
+[Try it](http://tinyurl.com/y7844mdp)
 
 
 
