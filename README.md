@@ -621,7 +621,25 @@ WHERE
 ```
 [Try it](http://tinyurl.com/y7844mdp)
 
+### Type localities
 
+```
+SELECT *
+WHERE
+{
+   ?taxon wdt:P31 wd:Q16521 . 
+   ?taxon wdt:P225 ?taxon_name . 
+   ?taxon wdt:P5304 ?type_locality .
+   ?type_locality p:P625 ?statement.
+   ?type_locality rdfs:label ?type_locality_name .
+   ?statement ps:P625 ?geo .
+   FILTER (lang(?type_locality_name) = 'en')
+ }
+```
+
+[Try it](https://w.wiki/T6x)
+
+![image](https://rawgit.com/rdmpage/wikidata-queries/master/images/type_localities.png) 
 
 ### Other topics
 
