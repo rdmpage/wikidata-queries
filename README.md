@@ -641,6 +641,74 @@ WHERE
 
 ![image](https://rawgit.com/rdmpage/wikidata-queries/master/images/type_localities.png) 
 
+### Taxonomic hierarchy (tricky because not a tree)
+
+#### GROUP_CONCAT
+
+Makes path, but rode dis jumbled (no natural way to order the taxa)
+
+```
+SELECT ?taxon  (GROUP_CONCAT(?parentTaxonLabel;SEPARATOR="|") AS ?path) WHERE 
+{
+  
+?taxon wdt:P225 'Arabidopsis thaliana' . 
+  
+# path, but not ordered in any sensible way
+?taxon wdt:P171+ ?parentTaxon . 
+?parentTaxon rdfs:label ?parentTaxonLabel 
+  
+FILTER(LANG(?parentTaxonLabel) = "en")
+  
+}
+GROUP BY ?taxon 
+
+
+```
+
+[Try it](https://w.wiki/dQp)
+
+#### Specify ranks wanted
+
+Use path queries
+
+```
+SELECT ?taxon ?taxonLabel ?path ?genusLabel ?familyLabel WHERE 
+{
+  
+?taxon wdt:P225 'Arabidopsis thaliana' . 
+?taxon rdfs:label ?taxonLabel .
+  
+# genus
+?taxon wdt:P171* ?genus . 
+?genus wdt:P105 wd:Q34740 .
+?genus rdfs:label ?genusLabel .
+  
+# family
+?genus wdt:P171* ?family . 
+?family wdt:P105 wd:Q35409 .
+?family rdfs:label ?familyLabel .
+        
+# order
+?family wdt:P171* ?order . 
+?order wdt:P105 wd:Q36602 .
+?order rdfs:label ?orderLabel .
+
+# path
+ BIND(CONCAT(?orderLabel, " / ", ?familyLabel, " / ", ?genusLabel ) AS ?path) .
+  
+FILTER(LANG(?taxonLabel) = "en")
+FILTER(LANG(?genusLabel) = "en")
+FILTER(LANG(?familyLabel) = "en")
+FILTER(LANG(?orderLabel) = "en")
+}
+
+
+
+```
+
+[Try it](https://w.wiki/dQz)
+
+
 ### Other topics
 
 #### Mountains in African Rift Valley
